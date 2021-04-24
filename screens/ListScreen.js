@@ -7,10 +7,18 @@ import {
   TouchableOpacity,
   ScrollView,
   Picker,
+  Image,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SearchableDropdown from 'react-native-searchable-dropdown';
+const fat = require('../assets/fat.jpeg');
+const fruit = require('../assets/fruit.png');
+const protein = require('../assets/protein.jpeg');
+const seafood = require('../assets/fish.png');
+const sauces = require('../assets/sauces.jpeg');
+const vegetable = require('../assets/vegetable.jpeg');
+const images = [protein, seafood, vegetable, fruit, fat, sauces];
 export default class ListScreen extends React.Component {
   constructor() {
     super();
@@ -21,7 +29,7 @@ export default class ListScreen extends React.Component {
       items: [],
       subcategories: [],
       list: [],
-     
+
       zindex: 1000,
     };
   }
@@ -46,15 +54,13 @@ export default class ListScreen extends React.Component {
               label: item.subCategoryname,
               value: item.subCategoryname,
             });
-           if( item.subCategoryname !==""){
-             list.push({ name: item.subCategoryname })
-           }
-            
-      
+            if (item.subCategoryname !== '') {
+              list.push({ name: item.subCategoryname });
+            }
 
             item.items.map((item) => {
-              if(item!==""){
-              subItems.push({ label: item, value: item });
+              if (item !== '') {
+                subItems.push({ label: item, value: item });
               }
               list.push({ name: item });
             });
@@ -80,8 +86,8 @@ export default class ListScreen extends React.Component {
     this.getData();
   }
   render() {
-    var list=this.state.list
-    console.log(list)
+    var list = this.state.list;
+    console.log(list);
     return (
       <ScrollView style={{ flex: 1, backgroundColor: '#eae3ff' }}>
         <View
@@ -90,6 +96,7 @@ export default class ListScreen extends React.Component {
             margin: 20,
             padding: 10,
             justifyContent: 'space-evenly',
+            marginTop: 50,
           }}>
           <Icon
             name="times-circle"
@@ -100,15 +107,10 @@ export default class ListScreen extends React.Component {
           <Text style={styles.title}>Approved Food List 🥘 </Text>
         </View>
         <View>
-         
           <SearchableDropdown
             multi={true}
             selectedItems={this.state.selectedItems}
-           
             containerStyle={{ padding: 5 }}
-            
-              
-            
             itemStyle={{
               padding: 10,
               marginTop: 2,
@@ -134,23 +136,32 @@ export default class ListScreen extends React.Component {
                 borderColor: 'blue',
                 borderRadius: 5,
                 backgroundColor: '#bdbfbe',
-                
               },
-               onTextChange: text => this.setState({search:text}),
-               value:this.state.search
+              onTextChange: (text) => this.setState({ search: text }),
             }}
             listProps={{
               nestedScrollEnabled: true,
             }}
           />
         </View>
-        <View>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           {this.state.data.map((item, index) => {
             var send = this.state.items[index];
             //console.log(index);
 
             return (
-              <View style={{ marginTop: 30 }}>
+              <View style={styles.containerStyle}>
+                <Image
+                  source={images[index]}
+                  style={{
+                    width: 30,
+                    height: 36,
+                    borderWidth: 0.1,
+                    borderRightWidth: 0,
+                    borderColor: '#d2d4d2',
+                    borderTopLeftRadius: 10,
+                  }}
+                />
                 <DropDownPicker
                   items={send}
                   placeholder={item.category.localImagePath}
@@ -170,10 +181,12 @@ export default class ListScreen extends React.Component {
                   searchablePlaceholderTextColor="gray"
                   searchableError={() => <Text>Not Found</Text>}
                   style={{
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5,
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 10,
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    borderLeftWidth: 0,
+                    width: 310,
                   }}
                   dropDownStyle={{
                     borderBottomLeftRadius: 20,
@@ -189,19 +202,19 @@ export default class ListScreen extends React.Component {
 }
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#ff5722',
   },
-  bar: {
-    borderWidth: 2,
-    height: 30,
-    width: 300,
-    paddingLeft: 10,
-    borderRadius: 5,
+  containerStyle: {
+    marginTop: 30,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderTopLeftRadius: 10,
     alignItems: 'center',
-    marginLeft: 20,
-    backgroundColor: '#bdbfbe',
     justifyContent: 'center',
+    width: 340,
+    height: 40,
+    borderTopRightRadius: 10,
   },
 });
